@@ -2,6 +2,10 @@ package com.desafio.banco.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tb_user")
 public class User {
@@ -10,15 +14,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(unique = true)
     private String email;
     private String phone;
-    private String birthDate;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private LocalDate birthDate;
     private String password;
+
+    @OneToMany(mappedBy = "client") // client pois no Account temos o private User client
+    private List<Account> accounts = new ArrayList<>();
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String phone, String birthDate, String password) {
+    public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -59,11 +70,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
