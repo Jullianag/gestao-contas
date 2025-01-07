@@ -38,4 +38,16 @@ public class AccountController {
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AccountDTO> update(@PathVariable Long id, @RequestBody AccountDTO dto) {
+        dto = accountService.update(id, dto);
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        accountService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
