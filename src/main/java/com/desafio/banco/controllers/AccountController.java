@@ -6,7 +6,11 @@ import com.desafio.banco.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/accounts")
@@ -16,17 +20,22 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public Page<AccountDTO> findAll(Pageable pageable) {
-        return accountService.findAll(pageable);
+    public ResponseEntity<Page<AccountDTO>> findAll(Pageable pageable) {
+        Page<AccountDTO> dto = accountService.findAll(pageable);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping(value = "/{id}")
-    public AccountDTO findById(@PathVariable Long id) {
-        return accountService.findById(id);
+    public ResponseEntity<AccountDTO> findById(@PathVariable Long id) {
+        AccountDTO dto = accountService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public AccountDTO insert(@RequestBody AccountDTO dto) {
-        return accountService.insert(dto);
+    public ResponseEntity<AccountDTO> insert(@RequestBody AccountDTO dto) {
+        dto = accountService.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 }

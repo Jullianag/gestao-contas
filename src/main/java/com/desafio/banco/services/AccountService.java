@@ -2,6 +2,7 @@ package com.desafio.banco.services;
 
 import com.desafio.banco.dto.AccountDTO;
 import com.desafio.banco.entities.Account;
+import com.desafio.banco.entities.AccountStatus;
 import com.desafio.banco.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,7 @@ public class AccountService {
         entity.setValor(dto.getValor());
         entity.setImgUrl(dto.getImgUrl());
         entity.setInstant(Instant.now());
-        entity.setStatus(dto.getStatus());
+        entity.setStatus(AccountStatus.ACTIVE);
 
         entity = accountRepository.save(entity);
         return new AccountDTO(entity);
