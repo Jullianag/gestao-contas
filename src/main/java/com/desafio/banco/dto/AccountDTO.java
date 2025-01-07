@@ -1,5 +1,6 @@
 package com.desafio.banco.dto;
 
+import com.desafio.banco.entities.Account;
 import com.desafio.banco.entities.AccountStatus;
 
 import java.time.Instant;
@@ -16,6 +17,16 @@ public class AccountDTO {
 
     public AccountDTO() {
 
+    }
+
+    public AccountDTO(Account entity) {
+        id = entity.getId();
+        nickname = entity.getNickname();
+        types = entity.getTypse();
+        valor = entity.getValor();
+        imgUrl = entity.getImgUrl();
+        instant = entity.getInstant();
+        status = entity.getStatus();
     }
 
     public Long getId() {
