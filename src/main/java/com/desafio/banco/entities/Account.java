@@ -2,8 +2,9 @@ package com.desafio.banco.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,14 +14,15 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String type;
-    private Double value;
+    private String nickname;
+    private String types;
+    private Double valor;
     private String imgUrl;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDate instant;
+    private Instant instant;
     private AccountStatus status;
+
 
     @ManyToOne
     @JoinColumn(name = "client_id") // chave estrangeira
@@ -35,11 +37,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long id, String name, String type, Double value, String imgUrl, LocalDate instant, AccountStatus status, User client) {
+    public Account(Long id, String nickname, String types, Double valor, String imgUrl, Instant instant, AccountStatus status, User client) {
         this.id = id;
-        this.name = name;
-        this.type = type;
-        this.value = value;
+        this.nickname = nickname;
+        this.types = types;
+        this.valor = valor;
         this.imgUrl = imgUrl;
         this.instant = instant;
         this.status = status;
@@ -54,28 +56,28 @@ public class Account {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getType() {
-        return type;
+    public String getTypse() {
+        return types;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypes(String types) {
+        this.types = types;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getValor() {
+        return valor;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
 
     public String getImgUrl() {
@@ -86,11 +88,11 @@ public class Account {
         this.imgUrl = imgUrl;
     }
 
-    public LocalDate getInstant() {
+    public Instant getInstant() {
         return instant;
     }
 
-    public void setInstant(LocalDate instant) {
+    public void setInstant(Instant instant) {
         this.instant = instant;
     }
 
@@ -112,5 +114,19 @@ public class Account {
 
     public Set<Bank> getBanks() {
         return banks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+        return Objects.equals(getId(), account.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }

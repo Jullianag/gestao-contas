@@ -3,6 +3,7 @@ package com.desafio.banco.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -39,5 +40,23 @@ public class Bank {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bank bank = (Bank) o;
+        return Objects.equals(getId(), bank.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }

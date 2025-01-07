@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
@@ -19,9 +20,8 @@ public class User {
     private String email;
     private String phone;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDate birthDate;
     private String password;
+    private LocalDate birthDate;
 
     @OneToMany(mappedBy = "client") // client pois no Account temos o private User client
     private List<Account> accounts = new ArrayList<>();
@@ -84,5 +84,19 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }
