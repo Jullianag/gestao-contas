@@ -4,13 +4,17 @@ import com.desafio.banco.dto.AccountDTO;
 import com.desafio.banco.entities.Account;
 import com.desafio.banco.entities.AccountStatus;
 import com.desafio.banco.repositories.AccountRepository;
+import com.desafio.banco.services.exceptions.DatabaseException;
 import com.desafio.banco.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 import java.time.Instant;
 
@@ -44,15 +48,28 @@ public class AccountService {
 
     @Transactional
     public AccountDTO update(Long id, AccountDTO dto) {
-        Account entity = accountRepository.getReferenceById(id);
-        copyDtoToEntity(dto, entity);
-        entity = accountRepository.save(entity);
-        return new AccountDTO(entity);
+        try{
+            Account entity = accountRepository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = accountRepository.save(entity);
+            return new AccountDTO(entity);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Recurso não encontrado.");
+        }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        accountRepository.deleteById(id);
+        if (!accountRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado.");
+        }
+        try {
+            accountRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial.");
+        }
     }
 
     private void copyDtoToEntity(AccountDTO dto, Account entity) {
