@@ -7,6 +7,7 @@ import com.desafio.banco.repositories.AccountRepository;
 import com.desafio.banco.services.exceptions.DatabaseException;
 import com.desafio.banco.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;

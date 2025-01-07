@@ -3,6 +3,7 @@ package com.desafio.banco.controllers;
 import com.desafio.banco.dto.AccountDTO;
 import com.desafio.banco.entities.Account;
 import com.desafio.banco.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountDTO> insert(@RequestBody AccountDTO dto) {
+    public ResponseEntity<AccountDTO> insert(@Valid @RequestBody AccountDTO dto) {
         dto = accountService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -40,7 +41,7 @@ public class AccountController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AccountDTO> update(@PathVariable Long id, @RequestBody AccountDTO dto) {
+    public ResponseEntity<AccountDTO> update(@PathVariable Long id, @Valid @RequestBody AccountDTO dto) {
         dto = accountService.update(id, dto);
         return ResponseEntity.ok(dto);
     }

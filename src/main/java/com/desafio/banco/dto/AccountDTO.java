@@ -2,12 +2,17 @@ package com.desafio.banco.dto;
 
 import com.desafio.banco.entities.Account;
 import com.desafio.banco.entities.AccountStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
 public class AccountDTO {
 
     private Long id;
+
+    @NotBlank(message = "Campo requerido!")
+    @Size(min = 2, max = 10, message = "Apelido precisa ter de 2 a 10 caracteres!")
     private String nickname;
     private String types;
     private Double valor;
