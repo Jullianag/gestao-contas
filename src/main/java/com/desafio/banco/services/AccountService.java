@@ -4,6 +4,7 @@ import com.desafio.banco.dto.AccountDTO;
 import com.desafio.banco.entities.Account;
 import com.desafio.banco.entities.AccountStatus;
 import com.desafio.banco.repositories.AccountRepository;
+import com.desafio.banco.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,8 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AccountDTO findById(Long id) {
-        Account account = accountRepository.findById(id).get();
+        Account account = accountRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado."));
         return new AccountDTO(account);
     }
 
