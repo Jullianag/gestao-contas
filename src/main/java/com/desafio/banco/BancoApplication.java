@@ -11,7 +11,7 @@ public class BancoApplication {
 		SpringApplication.run(BancoApplication.class, args);
 	}
 
-	@Override
+
 	public void run(String... args) throws Exception {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
