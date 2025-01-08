@@ -21,8 +21,10 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<Page<AccountDTO>> findAll(Pageable pageable) {
-        Page<AccountDTO> dto = accountService.findAll(pageable);
+    public ResponseEntity<Page<AccountDTO>> findAll(
+            @RequestParam(name = "name", defaultValue = "")
+            String name, Pageable pageable) {
+        Page<AccountDTO> dto = accountService.findAll(name, pageable);
         return ResponseEntity.ok(dto);
     }
 

@@ -27,8 +27,8 @@ public class AccountService {
 
 
     @Transactional(readOnly = true)
-    public Page<AccountDTO> findAll(Pageable pageable) {
-        Page<Account> result = accountRepository.findAll(pageable);
+    public Page<AccountDTO> findAll(String name, Pageable pageable) {
+        Page<Account> result = accountRepository.findByAccountName(name, pageable);
         return result.map(x -> new AccountDTO(x));
     }
 
