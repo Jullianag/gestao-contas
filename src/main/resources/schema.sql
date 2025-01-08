@@ -13,3 +13,10 @@ INSERT INTO tb_account (nickname, types, valor, img_url, instant, status, client
 INSERT INTO tb_account (nickname, types, valor, img_url, instant, status, client_id) VALUES ('Mari', 'Pessoa Física', 5000.0, 'https://conceito.de/wp-content/uploads/2012/01/banknotes-159085_1280.png', TIMESTAMP WITH TIME ZONE '2024-08-07T15:00:00Z', 1, 1);
 
 INSERT INTO tb_account_bank (account_id, bank_id) VALUES (1, 1);
+
+INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+
+INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
