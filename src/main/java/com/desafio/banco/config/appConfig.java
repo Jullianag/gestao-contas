@@ -1,4 +1,4 @@
-package com.desafio.banco.config.customgrant;
+package com.desafio.banco.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,10 +1,12 @@
 package com.desafio.banco.services;
 
+import com.desafio.banco.dto.UserDTO;
 import com.desafio.banco.entities.Role;
 import com.desafio.banco.entities.User;
 import com.desafio.banco.projections.UserDetailsProjection;
 import com.desafio.banco.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -51,5 +54,12 @@ public class UserService implements UserDetailsService {
         catch (Exception e) {
             throw new UsernameNotFoundException("Email not found!");
         }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+    @Transactional(readOnly = true)
+    public UserDTO getMe() {
+        User user = authenticated();
+        return new UserDTO(user);
     }
 }
