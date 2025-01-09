@@ -27,6 +27,9 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private AuthService authService;
+
 
     @Transactional(readOnly = true)
     public Page<AccountDTO> findAll(String name, Pageable pageable) {
@@ -38,6 +41,7 @@ public class AccountService {
     public AccountDTO findById(Long id) {
         Account account = accountRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado."));
+        authService.validateForAdmin(account.getClient().getId());
         return new AccountDTO(account);
     }
 
