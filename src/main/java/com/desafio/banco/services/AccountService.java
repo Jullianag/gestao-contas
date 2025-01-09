@@ -1,8 +1,10 @@
 package com.desafio.banco.services;
 
 import com.desafio.banco.dto.AccountDTO;
+import com.desafio.banco.dto.BankDTO;
 import com.desafio.banco.entities.Account;
 import com.desafio.banco.entities.AccountStatus;
+import com.desafio.banco.entities.Bank;
 import com.desafio.banco.repositories.AccountRepository;
 import com.desafio.banco.services.exceptions.DatabaseException;
 import com.desafio.banco.services.exceptions.ResourceNotFoundException;
@@ -80,6 +82,13 @@ public class AccountService {
         entity.setImgUrl(dto.getImgUrl());
         entity.setInstant(Instant.now());
         entity.setStatus(AccountStatus.ACTIVE);
+
+        entity.getBanks().clear();
+        for (BankDTO bankDTO : dto.getBanks()) {
+            Bank bank = new Bank();
+            bank.setId(bankDTO.getId());
+            entity.getBanks().add(bank);
+        }
     }
 
 }

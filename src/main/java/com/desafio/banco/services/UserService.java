@@ -27,16 +27,14 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        List<UserDetailsProjection> result = userRepository.searchuserAndRolesByEmail(username);
-
-        if (result.isEmpty()) {
-            throw new UsernameNotFoundException("User nor found!");
+        List<UserDetailsProjection> result = userRepository.searchUserAndRolesByEmail(username);
+        if (result.size() == 0) {
+            throw new UsernameNotFoundException("Email not found");
         }
 
         User user = new User();
-        user.setEmail(username);
+        user.setEmail(result.get(0).getUsername());
         user.setPassword(result.get(0).getPassword());
-
         for (UserDetailsProjection projection : result) {
             user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
         }
@@ -52,11 +50,11 @@ public class UserService implements UserDetailsService {
             return userRepository.findByEmail(username).get();
         }
         catch (Exception e) {
-            throw new UsernameNotFoundException("Email not found!");
+            throw new UsernameNotFoundException("Invalid user");
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+
     @Transactional(readOnly = true)
     public UserDTO getMe() {
         User user = authenticated();

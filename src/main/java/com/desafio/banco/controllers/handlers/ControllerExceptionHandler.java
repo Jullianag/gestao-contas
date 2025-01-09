@@ -1,7 +1,7 @@
 package com.desafio.banco.controllers.handlers;
 
-import com.desafio.banco.dto.CustomError;
-import com.desafio.banco.dto.ValidationError;
+import com.desafio.banco.dto.CustomErrorDTO;
+import com.desafio.banco.dto.ValidationErrorDTO;
 import com.desafio.banco.services.exceptions.DatabaseException;
 import com.desafio.banco.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,23 +18,23 @@ import java.time.Instant;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<CustomError> database(DatabaseException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> database(DatabaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomError> methodArgumentoNotValidation(MethodArgumentNotValidException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> methodArgumentoNotValidation(MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-        ValidationError err = new ValidationError(Instant.now(), status.value(), "Dados inválidos!", request.getRequestURI());
+        ValidationErrorDTO err = new ValidationErrorDTO(Instant.now(), status.value(), "Dados inválidos!", request.getRequestURI());
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
